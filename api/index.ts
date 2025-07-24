@@ -1,4 +1,4 @@
-import { serve } from '@hono/node-server';
+import { handle } from 'hono/vercel';
 import { Hono } from 'hono';
 
 const app = new Hono().basePath('/api');
@@ -25,12 +25,7 @@ app.get('/items', (c) => {
     });
 });
 
-serve(
-    {
-        fetch: app.fetch,
-        port: process.env.PORT ? parseInt(process.env.PORT) : 3000
-    },
-    (info) => {
-        console.log(`Server is running on http://localhost:${info.port}`);
-    }
-);
+const handler = handle(app);
+
+export const GET = handler;
+export const POST = handler;
